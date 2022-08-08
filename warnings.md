@@ -1,30 +1,7 @@
 # Changes:
-SyclMemoryModel.h:49, 429, 549
+SyclMemoryModel.h: 49, 429, 549
 
-```
-In file included from include_eigen.cpp:3:
-In file included from eigen/Eigen/Core:176:
-eigen/Eigen/src/Core/arch/Default/BFloat16.h:586:10: warning: comparison with infinity always evaluates to false in fast floating point modes [-Wtautological-constant-compare]
-  return (isinf)(float(a));
-         ^~~~~~~~~~~~~~~~~
-eigen/Eigen/src/Core/arch/Default/BFloat16.h:594:10: warning: comparison with NaN always evaluates to false in fast floating point modes [-Wtautological-constant-compare]
-  return (isnan)(float(a));
-         ^~~~~~~~~~~~~~~~~
-```
-```
-In file included from include_eigen.cpp:3:
-In file included from eigen/Eigen/Core:170:
-eigen/Eigen/src/Core/MathFunctions.h:1017:12: warning: comparison with NaN always evaluates to false in fast floating point modes [-Wtautological-constant-compare]
-    return isnan EIGEN_NOT_A_MACRO (x);
-           ^~~~~~~~~~~~~~~~~~~~~~~~~~~
-eigen/Eigen/src/Core/MathFunctions.h:1368:87: note: in instantiation of function template specialization 'Eigen::internal::isnan_impl<float>' requested here
-template<typename T> EIGEN_DEVICE_FUNC bool (isnan)   (const T &x) { return internal::isnan_impl(x); }
-                                                                                      ^
-eigen/Eigen/src/Core/arch/Default/BFloat16.h:351:15: note: in instantiation of function template specialization 'Eigen::numext::isnan<float>' requested here
-  if (numext::isnan EIGEN_NOT_A_MACRO(v)) {
-              ^
-```
-## deprecated 'global_buffer' -> use 'target::device' 
+## deprecated 'global_buffer' -> use 'target::device' at line 49 and 549 of ```eigen/Eigen/src/Core/arch/SYCL/SyclMemoryModel.h```
 ```
 In file included from include_eigen.cpp:3:
 In file included from eigen/Eigen/Core:239:
@@ -41,9 +18,8 @@ const sycl_acc_target default_acc_target = sycl_acc_target::global_buffer;
 #define __SYCL_DEPRECATED(message) [[deprecated(message)]]
                                      ^
 ```
-### Same warning at line 549 
 
-## Deprecated 'get_count' -> use size() instead 
+## Deprecated 'get_count' -> use size() instead at line 429 of ```eigen/Eigen/src/Core/arch/SYCL/SyclMemoryModel.h```
 
 ```
 In file included from include_eigen.cpp:3:
