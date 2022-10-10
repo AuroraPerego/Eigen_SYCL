@@ -1,6 +1,6 @@
-// dpcpp computeDirect.cc -o cD -isystem eigen -DEIGEN_DONT_PARALLELIZE -DEIGEN_USE_SYCL -fsycl-enable-function-pointers -fsycl-targets=spir64_x86_64,spir64_gen -Xsycl-target-backend=spir64_gen "-device xe_hp_sdv"
+// dpcpp computeDirect.cc -isystem eigen -DEIGEN_DONT_PARALLELIZE -DEIGEN_USE_SYCL -fsycl-enable-function-pointers -fsycl-targets=spir64_x86_64,spir64_gen -Xsycl-target-backend=spir64_gen "-device xe_hp_sdv" -o compute
 
-// dpcpp computeDirect.cc -o cD -isystem eigen -DEIGEN_DONT_PARALLELIZE -DEIGEN_USE_SYCL -fsycl-targets=spir64_x86_64,spir64_gen -Xsycl-target-backend=spir64_gen "-device xe_hp_sdv"
+// dpcpp computeDirect.cc -isystem eigen -DEIGEN_DONT_PARALLELIZE -DEIGEN_USE_SYCL -fsycl-targets=spir64_x86_64,spir64_gen -Xsycl-target-backend=spir64_gen "-device xe_hp_sdv" -o compute
 
 #include <Eigen/Core>
 #include <CL/sycl.hpp>
