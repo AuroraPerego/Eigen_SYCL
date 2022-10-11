@@ -1,9 +1,7 @@
 ### Get started:
 - ```git clone https://github.com/AuroraPerego/Eigen_SYCL.git```
 - ```cd Eigen_SYCL```
-- ```git clone https://gitlab.com/libeigen/eigen.git```
-- ```cd eigen```
-- ```git reset --hard 34780d8bd13d0af0cf17a22789ef286e8512594d```
+- ```git clone https://gitlab.com/AuroraPerego/eigen.git```
 - source the dpcpp compiler
 
 ### List of files:
