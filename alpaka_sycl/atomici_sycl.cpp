@@ -28,13 +28,13 @@ int main() {
   sycl::queue queue = sycl::queue(sycl::cpu_selector());
 
   int *d_data;
-  d_data = sycl::malloc_device<unsigned int>(100, queue);
+  d_data = sycl::malloc_device<int>(100, queue);
   queue.memset(d_data, 0, 100*sizeof(int)).wait();
   queue.parallel_for(
         sycl::nd_range<1>(sycl::range<1>(10), sycl::range<1>(10)),
         [=](sycl::nd_item<1> item) {
 	auto n0buff = sycl::ext::oneapi::group_local_memory_for_overwrite<int[100]>(item.get_group());
-	int* shared_b = n0buff.get();
+	int* shared_b = (int*)n0buff.get();
             testAdd(d_data, shared_b);
         }).wait();
   printf("Success\n");
