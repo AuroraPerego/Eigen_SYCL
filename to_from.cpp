@@ -23,22 +23,22 @@ int main(){
     const int N = 4;
     // INITIALIZATION
 
-    auto q = sycl::queue{sycl::cpu_selector()};
+    auto q = sycl::queue{sycl::gpu_selector()};
     q.submit([&](sycl::handler &cgh) {
         cgh.parallel_for(
           sycl::nd_range<1>(1, 1),
           [=](sycl::nd_item<1> item) {
-                Matrix3xNd<N> p3D = Eigen::MatrixXd::Random(3, N);
+                auto p3D = Eigen::MatrixXd::Random(3, N);
               
-                MatrixNd<N> G;
+                auto G  = Eigen::MatrixXd::Random(N, N);
                 double renorm;
                 renorm = G.sum();
                 G *= 1. / renorm;
-                const Matrix3xNd<N> X = p3D;
-                Matrix3d A = X * G * X.transpose();
+                auto X = p3D;
+                auto A = X * G * X.transpose();
   
                 double chi2;
-                Eigen::Vector3d v = min_eigen3D(A, chi2);
+                min_eigen3D(A, chi2);
       });
     });
 }

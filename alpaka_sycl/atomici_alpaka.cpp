@@ -53,7 +53,7 @@ using local_ref = sycl::atomic_ref<
     sycl::access::address_space::local_space>;
 
 template<typename THierarchy, typename T, typename TOp>
-inline auto callAtomicOp(T* const addr, TOp&& op)
+inline auto callAtomicOp(T* const addr, TOp&& op)// __attribute__((nonnull))
 {
     if(auto ptr = get_global_ptr(addr); ptr != nullptr)
     {
@@ -77,31 +77,32 @@ auto atomicAdd(T* const addr, T const& value) -> T
             [&value](auto& ref) { return ref.fetch_add(value); });
 };
 
+
+
+void callAtomic(int *a, int* b)
+{
+       atomicAdd<int,hierarchy::Blocks>(a, 1);     
+       //atomicAdd<int,hierarchy::Threads>(a, 1);  
+       //atomicAdd<int,hierarchy::Blocks>(b,1);    
+       //atomicAdd<int,hierarchy::Threads>(b,1);  
+}
 void testAdd(int *a, int* b)
 {
-    for (int i = 0; i < 100 ; i++)
-    {
-       atomicAdd<int,hierarchy::Blocks>(&a[i], i);  
-       atomicAdd<int,hierarchy::Threads>(&a[i], i); 
-       atomicAdd<int,hierarchy::Blocks>(&b[i],i);    
-       atomicAdd<int,hierarchy::Threads>(&b[i],i);  
-    }
+	callAtomic(a,b);
 }
-
 int main() {
-  sycl::queue queue = sycl::queue(sycl::gpu_selector());
+  sycl::queue queue = sycl::queue(sycl::cpu_selector());
 
-  int *d_data, *h_data;
-  h_data=(int *) malloc(100*sizeof(int));
-  d_data = sycl::malloc_device<int>(100, queue);
-  queue.memset(d_data, 0, 100 * sizeof(int)).wait();
+  int *d_data;
+  d_data = sycl::malloc_device<int>(1, queue);
+  queue.memset(d_data, 0, sizeof(int)).wait();
   queue.parallel_for(
-      sycl::nd_range<3>(sycl::range<3>(1, 1, 10), sycl::range<3>(1, 1, 10)),
-      [=](sycl::nd_item<3> item) {
-        auto bbuff = sycl::ext::oneapi::group_local_memory_for_overwrite<int[100]>(item.get_group());
-        int* b = (int*)bbuff.get();
-        testAdd(d_data, b);
-      }).wait();
+        sycl::nd_range<1>(sycl::range<1>(10), sycl::range<1>(10)),
+        [=](sycl::nd_item<1> item) {
+	auto n0buff = sycl::ext::oneapi::group_local_memory_for_overwrite<int>(item.get_group());
+	int* shared_b = n0buff.get();
+            testAdd(d_data, shared_b);
+        }).wait();
   printf("Success\n");
   return 0;
 }
